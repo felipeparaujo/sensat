@@ -1,0 +1,26 @@
+version: 2.1
+jobs:
+  test:
+    docker:
+      - image: circleci/python:3.8.1-buster
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install package
+          command: pip install --user "./sensat[ci]"
+
+      - run:
+          name: Lint
+          command: flake8 --config sensat/setup.cfg sensat/
+
+      - run:
+          name: Test
+          command: pytest ./sensat/test/
+
+workflows:
+  version: 2.1
+  tests:
+    jobs:
+      - test
